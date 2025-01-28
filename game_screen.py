@@ -55,6 +55,11 @@ class Board:
             return None
 
     def press_cell(self, pos):
+        if pos == (-1, -1):
+            if self.last_selected_cell is not None:
+                self.board[self.last_selected_cell[1]][self.last_selected_cell[0]]["selected"] = False
+            self.last_selected_cell = None
+            return
         if pos[2] == "big":
             if not self.board[pos[1]][pos[0]]["num"]:
                 if self.last_selected_cell:
@@ -64,10 +69,13 @@ class Board:
                 self.last_selected_cell = pos
             else:
                 self.moment_choice = False
+                if self.last_selected_cell is not None:
+                    self.board[self.last_selected_cell[1]][self.last_selected_cell[0]]["selected"] = False
+                    self.last_selected_cell = None
         if pos[2] == "small":
             if self.moment_choice:
                 num = self.keys_missing_nums[pos[0]]
-                if self.missing_nums[num] != 0:
+                if self.missing_nums[num] != 0 and self.last_selected_cell:
                     self.board[self.last_selected_cell[1]][self.last_selected_cell[0]]["num"] = num
                     self.missing_nums[num] -= 1
 

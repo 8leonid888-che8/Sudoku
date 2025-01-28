@@ -26,6 +26,8 @@ def main():
                             board.press_back(position)
                         if event.button == 3:
                             pass
+                    else:
+                        board.press_cell((-1, -1))
                     print(position)
 
 

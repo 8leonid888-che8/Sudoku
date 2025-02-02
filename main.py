@@ -4,10 +4,11 @@ from pygame.examples.moveit import WIDTH
 from game_screen import Board
 from start_screen import StartScreen
 window = ["start_screen", "game_screen"]
-window_pos = 1
+window_pos = 0
 
 
 def main():
+    global window_pos
     fps = 60
     pygame.init()
     width = 501
@@ -23,7 +24,16 @@ def main():
                 running = False
             if window[window_pos] == "start_screen":
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    start_screen.click(event.pos)
+                    window_pos = start_screen.click(event.pos)
+                if start_screen.window[start_screen.window_pos] == "sign in":
+                    if event.type == pygame.KEYDOWN:
+                        if event.key == pygame.K_BACKSPACE:
+                            start_screen.get_name("backspace ")
+                        if event.key == pygame.K_RETURN:
+                            window_pos = start_screen.get_name("enter ")
+
+                        else:
+                            start_screen.get_name(event.unicode)
 
 
             if window[window_pos] == "game_screen":

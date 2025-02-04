@@ -3,6 +3,7 @@ from pygame import Color
 
 from sudoku_generator import sudoku_generate
 
+
 # solution, task, missing_nums, dif = sudoku_generate(1)
 # print("dif", dif)
 # print(missing_nums)
@@ -44,7 +45,8 @@ class Board:
         if 0 <= x_point - self.left <= self.width * self.cell_size and 0 <= y_point - self.top <= self.height * self.cell_size:
             x_cell = (x_point - self.left) // self.cell_size
             y_cell = (y_point - self.top) // self.cell_size
-            return x_cell, y_cell, "big"
+            if 0 <= x_cell <= 8 and 0 <= y_cell <= 8:
+                return x_cell, y_cell, "big"
         if 0 <= x_point - self.left <= self.width * self.cell_size and 0 <= y_point - (
                 self.top + self.cell_size * 10 - 10) <= 2 * self.cell_size:
             x_cell = (x_point - self.left) // self.cell_size
@@ -75,17 +77,22 @@ class Board:
             if self.moment_choice:
                 num = self.keys_missing_nums[pos[0]]
                 if self.missing_nums[num] != 0 and self.last_selected_cell:
+                    n = self.board[self.last_selected_cell[1]][self.last_selected_cell[0]]["num"]
+                    if n != 0:
+                        self.missing_nums[n] += 1
                     self.board[self.last_selected_cell[1]][self.last_selected_cell[0]]["num"] = num
                     self.missing_nums[num] -= 1
 
     def press_back(self, pos):
         x, y, _ = pos
+        print(pos)
         if pos[2] == "big":
             if self.board[y][x]["change"] and self.board[y][x]["num"]:
                 num = self.board[y][x]["num"]
                 self.board[y][x]["num"] = 0
                 self.missing_nums[num] += 1
                 self.board[y][x]["selected"] = False
+                self.press_cell(pos)
 
     def render(self, screen):
         x, y = self.left, self.top

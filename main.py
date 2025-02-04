@@ -5,7 +5,7 @@ from game_screen import Board
 from start_screen import StartScreen
 
 window = ["start_screen", "game_screen"]
-window_pos = 0
+window_pos = 1
 
 
 def main():
@@ -13,6 +13,8 @@ def main():
     fps = 60
     pygame.init()
     width = height = 500
+    board = Board(3, 1)
+    board.set_view(width)
     screen = pygame.display.set_mode((width, height))
     start_screen = StartScreen(width, height)
     clock = pygame.time.Clock()
@@ -47,8 +49,11 @@ def main():
                     position = board.get_cell(*event.pos)
                     if position:
                         if event.button == 1:
-                            board.press_cell(position)
-                            board.press_back(position)
+                            if position[2] == "small":
+                                board.press_cell(position)
+                            else:
+                                board.press_back(position)
+                                board.press_cell(position)
                         if event.button == 3:
                             pass
                     else:

@@ -4,7 +4,7 @@ import pygame
 class StartScreen:
     def __init__(self, width, height):
         self.window = ["menu", "sign in", "choice level", "rating"]
-        self.window_pos = 2
+        self.window_pos = 0
         self.__width = width
         self.__height = height
         self.__label = None

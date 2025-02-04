@@ -14,8 +14,6 @@ def main():
     pygame.init()
     width = height = 500
     screen = pygame.display.set_mode((width, height))
-    board = Board()
-    board.set_view(width)
     start_screen = StartScreen(width, height)
     clock = pygame.time.Clock()
     running = True
@@ -32,11 +30,17 @@ def main():
                         if event.key == pygame.K_BACKSPACE:
                             start_screen.get_name("backspace ")
                         if event.key == pygame.K_RETURN:
-                            if start_screen.get_name("enter "):
-                                window_pos = 1
-
+                            start_screen.get_name("enter ")
                         else:
                             start_screen.get_name(event.unicode)
+
+                if start_screen.window[start_screen.window_pos] == "choice level":
+                    if event.type == pygame.MOUSEBUTTONDOWN:
+                        answer = start_screen.click(event.pos)
+                        if answer:
+                            board = Board(3, answer)
+                            board.set_view(width)
+
 
             if window[window_pos] == "game_screen":
                 if event.type == pygame.MOUSEBUTTONDOWN:

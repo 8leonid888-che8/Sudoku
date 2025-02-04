@@ -3,18 +3,18 @@ from pygame import Color
 
 from sudoku_generator import sudoku_generate
 
-solution, task, missing_nums, dif = sudoku_generate(1)
-print("dif", dif)
-print(missing_nums)
-print(solution)
-
-print(task)
+# solution, task, missing_nums, dif = sudoku_generate(1)
+# print("dif", dif)
+# print(missing_nums)
+# print(solution)
+# print(task)
 
 
 class Board:
-    def __init__(self, n=3):
+    def __init__(self, n=3, lvl=1):
         self.n = n  # количество клеток в районе
-        self.board = task
+        self.__solution, self.board, self.missing_nums, diff = sudoku_generate(lvl)
+        print(diff)
         for y in range(n ** 2):
             for x in range(n ** 2):
                 val = self.board[y][x]
@@ -29,7 +29,6 @@ class Board:
         self.width = n ** 2
         self.height = n ** 2
         self.moment_choice = False
-        self.missing_nums = missing_nums
         self.last_selected_cell = None
         self.keys_missing_nums = list(self.missing_nums.keys())
         self.k = 1

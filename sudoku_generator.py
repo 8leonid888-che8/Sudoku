@@ -3,9 +3,11 @@ import solver
 from math import floor
 
 easy_lvl = 45
-medium_lvl = 35
+middle_lvl = 35
 hard_lvl = 25
-legendary_lvl = 12
+legendary_lvl = 7
+
+
 class Grid:
     def __init__(self, n=3):
         """ Generation of the base table """
@@ -85,7 +87,7 @@ difficult = example.n ** 4  # Первоначально все элементы
 solution = example.table
 
 
-def sudoku_generate(diff=3):
+def sudoku_generate(diff):
     global difficult, iterator
     example = Grid()
     example.mix()
@@ -98,7 +100,7 @@ def sudoku_generate(diff=3):
     while iterator < example.n ** 4:
         if diff == 1 and difficult == easy_lvl:
             break
-        if diff == 2 and difficult ==medium_lvl:
+        if diff == 2 and difficult == middle_lvl:
             break
         if diff == 3 and difficult == hard_lvl:
             break

@@ -2,7 +2,10 @@ import random
 import solver
 from math import floor
 
-
+easy_lvl = 45
+medium_lvl = 35
+hard_lvl = 25
+legendary_lvl = 12
 class Grid:
     def __init__(self, n=3):
         """ Generation of the base table """
@@ -93,12 +96,15 @@ def sudoku_generate(diff=3):
     missing_nums = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0}
 
     while iterator < example.n ** 4:
-        if diff == 1 and 40 <= difficult <= 50:
+        if diff == 1 and difficult == easy_lvl:
             break
-        if diff == 2 and 25 <= difficult <= 27:
+        if diff == 2 and difficult ==medium_lvl:
             break
-        if diff == 3 and 20 <= difficult <= 23:
+        if diff == 3 and difficult == hard_lvl:
             break
+        if diff == 4 and difficult == legendary_lvl:
+            break
+
         i, j = random.randrange(0, example.n * example.n, 1), random.randrange(0, example.n * example.n,
                                                                                1)  # Выбираем случайную ячейку
         if flook[i][j] == 0:  # Если её не смотрели

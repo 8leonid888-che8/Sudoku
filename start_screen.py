@@ -3,7 +3,7 @@ import pygame
 
 class StartScreen:
     def __init__(self, width, height):
-        self.window = ["menu", "sign in", "rating"]
+        self.window = ["menu", "sign in", "choice level", "rating"]
         self.window_pos = 0
         self.__width = width
         self.__height = height
@@ -76,7 +76,8 @@ class StartScreen:
         if self.__input_moment == 1:
             if word == "enter " and self.__name != "write your name":
                 self.__input_moment = False
-                return 1
+                self.window_pos = 2
+                # return 1
             if word == "backspace " and len(self.__name) != 0:
                 self.__name = self.__name[0:-1]
             else:
@@ -86,7 +87,6 @@ class StartScreen:
                     else:
                         self.__name += word
 
-        return 0
 
     def click(self, pos):
         if self.window[self.window_pos] == "menu":
@@ -100,5 +100,8 @@ class StartScreen:
                 if self.__input_moment == 1:
                     self.__input_moment = -1
             if self.__button_play and self.__button_play.collidepoint(pos) and self.__name != "write your name":
-                return 1
-        return 0
+                self.window_pos = 2
+                # return 1
+
+        if self.window[self.window_pos] == "choice level":
+            pass

@@ -129,4 +129,4 @@ def sudoku_generate(diff=3):
                 difficult += 1  # Облегчаем
                 missing_nums[temp] -= 1
     task = example.table
-    return solution, task, missing_nums, difficult
+    return solution, task, missing_nums, difficult, diff

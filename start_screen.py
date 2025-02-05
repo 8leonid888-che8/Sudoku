@@ -15,7 +15,7 @@ class StartScreen:
         self.__btn_middle_lvl = None
         self.__btn_easy_lvl = None
         self.__btn_hard_lvl = None
-        self.__btn_legendary_lvl = None
+        # self.__btn_legendary_lvl = None
         self.__name = "write your name"
         self.__input_moment = -1
 
@@ -101,15 +101,15 @@ class StartScreen:
                 word_rect = [word_rect[0] - step, word_rect[1] - step, word_rect[2] + step * 2, word_rect[3] + step * 2]
                 pygame.draw.rect(screen, pygame.Color(color), word_rect, 1)
                 self.__btn_hard_lvl = pygame.Rect(word_rect)
-        font = pygame.font.Font(None, 60)
-        str_render = font.render("legendary", 1, pygame.Color(color))
-        word_rect = str_render.get_rect()
-        word_rect = [self.__width // 2 - word_rect[2] // 2, y_pos + 40,
-                     word_rect[2], word_rect[3]]
-        screen.blit(str_render, word_rect)
-        word_rect = [word_rect[0] - step, word_rect[1] - step, word_rect[2] + step * 2, word_rect[3] + step * 2]
-        pygame.draw.rect(screen, pygame.Color(color), word_rect, 1)
-        self.__btn_legendary_lvl = pygame.Rect(word_rect)
+        # font = pygame.font.Font(None, 60)
+        # str_render = font.render("legendary", 1, pygame.Color(color))
+        # word_rect = str_render.get_rect()
+        # word_rect = [self.__width // 2 - word_rect[2] // 2, y_pos + 40,
+        #              word_rect[2], word_rect[3]]
+        # screen.blit(str_render, word_rect)
+        # word_rect = [word_rect[0] - step, word_rect[1] - step, word_rect[2] + step * 2, word_rect[3] + step * 2]
+        # pygame.draw.rect(screen, pygame.Color(color), word_rect, 1)
+        # self.__btn_legendary_lvl = pygame.Rect(word_rect)
 
 
     def render(self, screen):
@@ -161,6 +161,6 @@ class StartScreen:
                 return 2
             if self.__btn_hard_lvl and self.__btn_hard_lvl.collidepoint(pos):
                 return 3
-            if self.__btn_legendary_lvl and self.__btn_legendary_lvl.collidepoint(pos):
-                return 4
+            # if self.__btn_legendary_lvl and self.__btn_legendary_lvl.collidepoint(pos):
+            #     return 4
 

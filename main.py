@@ -5,7 +5,7 @@ from game_screen import Board
 from start_screen import StartScreen
 
 window = ["start_screen", "game_screen"]
-window_pos = 1
+window_pos =1
 
 
 def main():
@@ -13,8 +13,9 @@ def main():
     fps = 60
     pygame.init()
     width = height = 500
+    width = 600
     board = Board(3, 1)
-    board.set_view(width)
+    board.set_view(width, height)
     screen = pygame.display.set_mode((width, height))
     start_screen = StartScreen(width, height)
     clock = pygame.time.Clock()

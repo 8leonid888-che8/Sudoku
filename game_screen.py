@@ -14,15 +14,17 @@ from sudoku_generator import sudoku_generate
 class Board:
     def __init__(self, n=3, lvl=1):
         self.n = n  # количество клеток в районе
-        self.__solution, self.board, self.missing_nums, diff = sudoku_generate(lvl)
-        print(diff)
+        self.__solution, self.board, self.missing_nums, diff, self.lvl = sudoku_generate(lvl)
+        print(self.__solution)
+        print(self.board)
+        print(diff, self.lvl)
         for y in range(n ** 2):
             for x in range(n ** 2):
                 val = self.board[y][x]
                 if val:
                     self.board[y][x] = {"num": val, "change": False, "selected": False}
                 else:
-                    self.board[y][x] = {"num": 0, "change": True, "selected": False}
+                    self.board[y][x] = {"num": 0, "change": True, "selected": False, "correct": None}
         self.left = 10
         self.top = 10
         self.cell_size = 40
@@ -32,13 +34,15 @@ class Board:
         self.moment_choice = False
         self.last_selected_cell = None
         self.keys_missing_nums = list(self.missing_nums.keys())
+        self.score = 0
+        self.health = 3
         self.k = 1
 
-    def set_view(self, width):
-        self.cell_size = round(40 * width / 500)
-        self.left = width // 2 - self.cell_size * 9 // 2
+    def set_view(self, width, height):
+        self.cell_size = round(40 * height / 500)
+        self.left = round((width // 2 - self.cell_size * 9 // 2) * 0.5)
         self.top = 20
-        self.k = width / 500
+        self.k = height / 500
         print(self.k)
 
     def get_cell(self, x_point, y_point):
@@ -80,8 +84,10 @@ class Board:
                     n = self.board[self.last_selected_cell[1]][self.last_selected_cell[0]]["num"]
                     if n != 0:
                         self.missing_nums[n] += 1
+                        self.check(self.last_selected_cell, "del")
                     self.board[self.last_selected_cell[1]][self.last_selected_cell[0]]["num"] = num
                     self.missing_nums[num] -= 1
+            self.check(self.last_selected_cell, "add")
 
     def press_back(self, pos):
         x, y, _ = pos
@@ -93,6 +99,40 @@ class Board:
                 self.missing_nums[num] += 1
                 self.board[y][x]["selected"] = False
                 self.press_cell(pos)
+                self.check(pos, "del")
+
+    def check(self, pos, latter):
+        x, y, _ = pos
+        if latter == "add":
+            if self.board[y][x]["change"]:
+                if self.board[y][x]["num"] == self.__solution[y][x]:
+                    self.board[y][x]["correct"] = True
+                    if self.lvl == 1:
+                        self.score += 35 * self.lvl
+                    if self.lvl == 2:
+                        self.score += 45 * self.lvl
+                    if self.lvl == 3:
+                        self.score += 63 * self.lvl
+                else:
+                    self.board[y][x]["correct"] = False
+                    self.health -= 1
+        if latter == "del":
+            self.board[y][x]["correct"] = None
+            if self.score > 0:
+                if self.lvl == 1:
+                    self.score -= 35 * self.lvl
+                if self.lvl == 2:
+                    self.score -= 45 * self.lvl
+                if self.lvl == 3:
+                    self.score -= 63 * self.lvl
+
+        print(pos, "pos",  self.board[y][x])
+        print(self.score)
+
+
+
+
+
 
     def render(self, screen):
         x, y = self.left, self.top

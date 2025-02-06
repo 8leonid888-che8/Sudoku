@@ -164,3 +164,10 @@ class StartScreen:
             # if self.__btn_legendary_lvl and self.__btn_legendary_lvl.collidepoint(pos):
             #     return 4
 
+    def change_window(self):
+        if self.window[self.window_pos] == "sign in" or self.window[self.window_pos] == "rating":
+            self.window_pos = 0
+        if self.window[self.window_pos] == "choice level":
+            self.window_pos = 1
+
+

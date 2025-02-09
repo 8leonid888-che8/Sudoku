@@ -94,7 +94,7 @@ class Board:
         if pos[2] == "small":
             if self.moment_choice:
                 num = self.keys_missing_nums[pos[0]]
-                if self.board[self.last_selected_cell[1]][self.last_selected_cell[0]]["num"] and self.board[self.last_selected_cell[1]][self.last_selected_cell[0]]["num"] == num:
+                if self.last_selected_cell and self.board[self.last_selected_cell[1]][self.last_selected_cell[0]]["num"] == num:
                     return
                 if self.missing_nums[num] != 0 and self.last_selected_cell:
                     n = self.board[self.last_selected_cell[1]][self.last_selected_cell[0]]["num"]

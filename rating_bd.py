@@ -11,7 +11,7 @@ def save_result(name, score):
     LIMIT 1)""", (name,))
     flag = cur.fetchone()
     if flag[0]:
-        cur.execute("""UPDATE rating SET score = ? WHERE name = ?""", (score, name))
+        cur.execute("""UPDATE rating SET score = score + ? WHERE name = ?""", (score, name))
     else:
         cur.execute("""INSERT INTO rating (name, score) VALUES (?, ?)""", (name, score))
     con.commit()

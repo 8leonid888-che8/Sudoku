@@ -6,7 +6,7 @@ from start_screen import StartScreen
 from BackBtn import BackButton
 from result import Result
 window = ["start_screen", "game_screen", "result_screen"]
-window_pos = 2
+window_pos = 0
 
 
 def main():
@@ -86,6 +86,7 @@ def main():
         if window[window_pos] == "result_screen":
             if ans_back_btn:
                 window_pos = 0
+                start_screen = StartScreen(width, height)
 
         if window[window_pos] == "game_screen":
             board.render(screen)

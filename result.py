@@ -1,7 +1,5 @@
 import pygame
-
-from sudoku_generator import medium_lvl
-
+from rating_bd import save_result
 
 class Result:
     def __init__(self, score, status, color):
@@ -20,6 +18,7 @@ class Result:
         self.width = width
         self.height = height
         self.name = name
+        save_result(self.name, self.score)
 
     def render(self, screen):
         y = 20

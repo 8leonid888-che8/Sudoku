@@ -38,7 +38,7 @@ class Board:
         self.last_selected_cell = None
         self.keys_missing_nums = list(self.missing_nums.keys())
         self.score = 0
-        self.health = 11
+        self.health = 3
         self.k = 1
         self.color = "red"
         self.width = None
@@ -94,7 +94,7 @@ class Board:
         if pos[2] == "small":
             if self.moment_choice:
                 num = self.keys_missing_nums[pos[0]]
-                if self.board[self.last_selected_cell[1]][self.last_selected_cell[0]]["num"] == num:
+                if self.last_selected_cell and self.board[self.last_selected_cell[1]][self.last_selected_cell[0]]["num"] == num:
                     return
                 if self.missing_nums[num] != 0 and self.last_selected_cell:
                     n = self.board[self.last_selected_cell[1]][self.last_selected_cell[0]]["num"]
@@ -140,14 +140,15 @@ class Board:
                             self.health -= 1
             if latter == "del":
                 print("dell")
-                self.board[y][x]["correct"] = None
-                if self.score > 0:
-                    if self.lvl == 1:
-                        self.score -= 35 * self.lvl
-                    if self.lvl == 2:
-                        self.score -= 45 * self.lvl
-                    if self.lvl == 3:
-                        self.score -= 63 * self.lvl
+                if self.board[y][x]["correct"]:
+                    self.board[y][x]["correct"] = None
+                    if self.score > 0:
+                        if self.lvl == 1:
+                            self.score -= 35 * self.lvl
+                        if self.lvl == 2:
+                            self.score -= 45 * self.lvl
+                        if self.lvl == 3:
+                            self.score -= 63 * self.lvl
 
             print(pos, "pos", self.board[y][x])
             print(self.score)
@@ -225,6 +226,8 @@ class Board:
                     f.append(x["num"] != 0 and x["correct"])
         if self.health == 0:
             print(self.health, f)
+            self.health = 3
             return "Game over"
         if all(f):
+            self.health = 3
             return "Victory"

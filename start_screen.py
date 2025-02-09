@@ -1,5 +1,5 @@
 import pygame
-
+from rating_bd import fetch_all_data
 
 class StartScreen:
     def __init__(self, width, height):
@@ -81,14 +81,14 @@ class StartScreen:
             word_rect = str_render.get_rect()
             word_rect = [self.__width // 2 - word_rect[2] // 2, (self.__height // 2 - word_rect[3] // 2 - 100),
                          word_rect[2], word_rect[3]]
-            if word == "middle":
+            if word == "medium":
                 x = word_rect[0]
                 y_pos = word_rect[1] + word_rect[3]
                 length = word_rect[2]
                 screen.blit(str_render, word_rect)
                 word_rect = [word_rect[0] - step, word_rect[1] - step, word_rect[2] + step * 2, word_rect[3] + step * 2]
                 pygame.draw.rect(screen, pygame.Color(color), word_rect, 1)
-                self.__btn_middle_lvl = pygame.Rect(word_rect)
+                self.__btn_medium_lvl = pygame.Rect(word_rect)
             if word == "easy":
                 word_rect[0] = word_rect[0] - 20 - length
                 screen.blit(str_render, word_rect)
@@ -112,6 +112,20 @@ class StartScreen:
         # self.__btn_legendary_lvl = pygame.Rect(word_rect)
 
 
+    def __render_rating(self, screen, color):
+        data = sorted(fetch_all_data(), key=lambda x: x[2], reverse=True)
+        x = self.__width // 2
+        top = 40
+        step = 10
+        for i in range(len(data)):
+            font = pygame.font.Font(None, 30)
+            str_render = font.render(f"{i+1}. {data[i][1]} {data[i][2]}", 1, pygame.Color(color))
+            rect = str_render.get_rect()
+            rect.x = x - rect.w // 2
+            rect.y = top + step
+            top += step + rect.height
+            screen.blit(str_render, rect)
+
     def render(self, screen):
         color = "red"
         if self.window[self.window_pos] == "menu":
@@ -120,6 +134,10 @@ class StartScreen:
             self.__render_sign_in(screen, color)
         if self.window[self.window_pos] == "choice level":
             self.__render_choice_lvl(screen, color)
+        if self.window[self.window_pos] == "rating":
+            self.__render_rating(screen, color)
+
+
 
     def get_name(self, word):
         if self.__input_moment == 1:
@@ -142,6 +160,8 @@ class StartScreen:
         if self.window[self.window_pos] == "menu":
             if self.__sign_in and self.__sign_in.collidepoint(pos):
                 self.window_pos = 1
+            if self.__rating and self.__rating.collidepoint(pos):
+                self.window_pos = 3
 
         if self.window[self.window_pos] == "sign in":
             if self.__input_user and self.__input_user.collidepoint(pos):
@@ -157,7 +177,7 @@ class StartScreen:
         if self.window[self.window_pos] == "choice level":
             if self.__btn_easy_lvl and self.__btn_easy_lvl.collidepoint(pos):
                 return 1
-            if self.__btn_middle_lvl and self.__btn_middle_lvl.collidepoint(pos):
+            if self.__btn_medium_lvl and self.__btn_medium_lvl.collidepoint(pos):
                 return 2
             if self.__btn_hard_lvl and self.__btn_hard_lvl.collidepoint(pos):
                 return 3

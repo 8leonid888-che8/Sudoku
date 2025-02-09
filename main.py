@@ -4,14 +4,15 @@ from pygame.examples.moveit import WIDTH
 from game_screen import Board
 from start_screen import StartScreen
 from BackBtn import BackButton
-
-window = ["start_screen", "game_screen"]
-window_pos = 0
+from result import Result
+window = ["start_screen", "game_screen", "result_screen"]
+window_pos = 2
 
 
 def main():
     global window_pos
     fps = 60
+    color = "red"
     pygame.init()
     width = height = 500
     width = 600
@@ -19,6 +20,7 @@ def main():
     back_btn_group = pygame.sprite.Group()
     back_btn_group.add(BackButton(width, 10))
     start_screen = StartScreen(width, height)
+    result = Result(0, None, color)
     board = Board(3, 1)
     board.set_view(width, height)
     clock = pygame.time.Clock()
@@ -57,6 +59,13 @@ def main():
                             board.set_view(width, height)
 
             if window[window_pos] == "game_screen":
+                answer_board = board.check_points_health()
+                if answer_board:
+                    window_pos = 2
+                    score = board.score
+                    status = answer_board
+                    print(status, "status")
+                    result.set_score(score, status, width, height, start_screen.name)
                 if ans_back_btn:
                     window_pos = 0
                 if event.type == pygame.MOUSEBUTTONDOWN:
@@ -74,11 +83,18 @@ def main():
                         board.press_cell((-1, -1))
                     print(position)
 
+        if window[window_pos] == "result_screen":
+            if ans_back_btn:
+                window_pos = 0
+
         if window[window_pos] == "game_screen":
             board.render(screen)
 
         if window[window_pos] == "start_screen":
             start_screen.render(screen)
+
+        if window[window_pos] == "result_screen":
+            result.render(screen)
         back_btn_group.draw(screen)
         pygame.display.update()
         screen.fill((0, 0, 0))

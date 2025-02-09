@@ -12,11 +12,11 @@ class StartScreen:
         self.__rating = None
         self.__input_user = None
         self.__button_play = None
-        self.__btn_middle_lvl = None
+        self.__btn_medium_lvl = None
         self.__btn_easy_lvl = None
         self.__btn_hard_lvl = None
         # self.__btn_legendary_lvl = None
-        self.__name = "write your name"
+        self.name = "write your name"
         self.__input_moment = -1
 
     def __render_menu(self, screen, color):
@@ -48,7 +48,7 @@ class StartScreen:
     def __render_sign_in(self, screen, color):
         distance = 50
         font = pygame.font.Font(None, 30)
-        str_render = font.render(self.__name, 1, pygame.Color(color))
+        str_render = font.render(self.name, 1, pygame.Color(color))
         intro_rect = str_render.get_rect()
         intro_rect = [self.__width // 2 - intro_rect[2] // 2, (self.__height // 2 - intro_rect[3] // 2 - 100),
                       intro_rect[2], intro_rect[3]]
@@ -71,7 +71,7 @@ class StartScreen:
 
     def __render_choice_lvl(self, screen, color):
         step = 4
-        words = ["middle", "easy", "hard"]
+        words = ["medium", "easy", "hard"]
         # legendary
         x_pos = length = 0
         y_pos = 0
@@ -123,20 +123,20 @@ class StartScreen:
 
     def get_name(self, word):
         if self.__input_moment == 1:
-            if word == "enter " and self.__name != "write your name" and self.__name != "":
-                print(self.__name, len(self.__name), "n")
+            if word == "enter " and self.name != "write your name" and self.name != "":
+                print(self.name, len(self.name), "n")
                 self.__input_moment = False
                 self.window_pos = 2
                 # return 1
-            if word == "backspace " and len(self.__name) != 0:
-                self.__name = self.__name[0:-1]
+            if word == "backspace " and len(self.name) != 0:
+                self.name = self.name[0:-1]
             else:
                 if word.isalpha() or word.isdigit():
-                    if self.__name == "write your name":
-                        self.__name = word
+                    if self.name == "write your name":
+                        self.name = word
                     else:
-                        self.__name += word
-        print(self.__name)
+                        self.name += word
+        print(self.name)
 
     def click(self, pos):
         if self.window[self.window_pos] == "menu":
@@ -150,7 +150,7 @@ class StartScreen:
                 if self.__input_moment == 1:
                     self.__input_moment = -1
             if self.__button_play and self.__button_play.collidepoint(
-                    pos) and self.__name != "write your name" and self.__name != "":
+                    pos) and self.name != "write your name" and self.name != "":
                 self.window_pos = 2
                 # return 1
 

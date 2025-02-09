@@ -2,6 +2,7 @@ import pygame
 from pygame import Color
 # from BackBtn import BackButton
 from sudoku_generator import sudoku_generate
+import copy
 
 
 # solution, task, missing_nums, dif = sudoku_generate(1)
@@ -15,6 +16,8 @@ class Board:
     def __init__(self, n=3, lvl=1):
         self.n = n  # количество клеток в районе
         self.__solution, self.board, self.missing_nums, diff, self.lvl = sudoku_generate(lvl)
+        # self.board = copy.deepcopy(self.__solution)
+        # self.board[0][0] = 0
         print(self.__solution)
         print(self.board)
         print(diff, self.lvl)
@@ -35,13 +38,15 @@ class Board:
         self.last_selected_cell = None
         self.keys_missing_nums = list(self.missing_nums.keys())
         self.score = 0
-        self.health = 3
+        self.health = 11
         self.k = 1
         self.color = "red"
-        self.width= None
+        self.width = None
         self.height = None
+        self.last_val = None
         # self.btn_back = pygame.sprite.Group()
         # BackButton(self.width, self.top, self.btn_back)
+
     def set_view(self, width, height):
         self.cell_size = round(40 * height / 500)
         # self.left = round((width // 2 - self.cell_size * 9 // 2) * 0.5)
@@ -72,6 +77,8 @@ class Board:
                 self.board[self.last_selected_cell[1]][self.last_selected_cell[0]]["selected"] = False
             self.last_selected_cell = None
             return
+
+
         if pos[2] == "big":
             if not self.board[pos[1]][pos[0]]["num"]:
                 if self.last_selected_cell:
@@ -87,13 +94,16 @@ class Board:
         if pos[2] == "small":
             if self.moment_choice:
                 num = self.keys_missing_nums[pos[0]]
+                if self.board[self.last_selected_cell[1]][self.last_selected_cell[0]]["num"] == num:
+                    return
                 if self.missing_nums[num] != 0 and self.last_selected_cell:
                     n = self.board[self.last_selected_cell[1]][self.last_selected_cell[0]]["num"]
-                    if n != 0 and self.board[self.last_selected_cell[1]][self.last_selected_cell[0]]["correct"]:
+                    if n != 0:
                         self.missing_nums[n] += 1
                         self.check(self.last_selected_cell, "del")
                     self.board[self.last_selected_cell[1]][self.last_selected_cell[0]]["num"] = num
                     self.missing_nums[num] -= 1
+                    self.last_val = num
             self.check(self.last_selected_cell, "add")
 
     def press_back(self, pos):
@@ -109,32 +119,38 @@ class Board:
                 self.check(pos, "del")
 
     def check(self, pos, latter):
-        x, y, _ = pos
-        if latter == "add":
-            if self.board[y][x]["change"]:
-                if self.board[y][x]["num"] == self.__solution[y][x]:
-                    self.board[y][x]["correct"] = True
+        if pos:
+            x, y, _ = pos
+            if latter == "add":
+                if self.board[y][x]["change"]:
+                    if self.board[y][x]["num"] == self.__solution[y][x]:
+                        self.board[y][x]["correct"] = True
+                        self.board[y][x]["change"] = False
+                        self.board[y][x]["selected"] = False
+                        self.last_selected_cell = None
+                        if self.lvl == 1:
+                            self.score += 35 * self.lvl
+                        if self.lvl == 2:
+                            self.score += 45 * self.lvl
+                        if self.lvl == 3:
+                            self.score += 63 * self.lvl
+                    else:
+                        self.board[y][x]["correct"] = False
+                        if self.health != 0:
+                            self.health -= 1
+            if latter == "del":
+                print("dell")
+                self.board[y][x]["correct"] = None
+                if self.score > 0:
                     if self.lvl == 1:
-                        self.score += 35 * self.lvl
+                        self.score -= 35 * self.lvl
                     if self.lvl == 2:
-                        self.score += 45 * self.lvl
+                        self.score -= 45 * self.lvl
                     if self.lvl == 3:
-                        self.score += 63 * self.lvl
-                else:
-                    self.board[y][x]["correct"] = False
-                    self.health -= 1
-        if latter == "del":
-            self.board[y][x]["correct"] = None
-            if self.score > 0:
-                if self.lvl == 1:
-                    self.score -= 35 * self.lvl
-                if self.lvl == 2:
-                    self.score -= 45 * self.lvl
-                if self.lvl == 3:
-                    self.score -= 63 * self.lvl
+                        self.score -= 63 * self.lvl
 
-        print(pos, "pos", self.board[y][x])
-        print(self.score)
+            print(pos, "pos", self.board[y][x])
+            print(self.score)
 
     # def press_back_btn(self, arg):
     #     answer  = self.btn_back.update(*arg)
@@ -200,3 +216,15 @@ class Board:
         text_rect = [x, y, text_rect[2], text_rect[3]]
         screen.blit(text, text_rect)
         # self.btn_back.draw(screen)
+
+    def check_points_health(self):
+        f = []
+        for y in self.board:
+            for x in y:
+                if x["change"]:
+                    f.append(x["num"] != 0 and x["correct"])
+        if self.health == 0:
+            print(self.health, f)
+            return "Game over"
+        if all(f):
+            return "Victory"

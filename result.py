@@ -1,6 +1,7 @@
 import pygame
 from rating_bd import save_result
 
+
 class Result:
     def __init__(self, score, status, color):
         self.score = score

@@ -1,5 +1,6 @@
 from itertools import product
 
+
 def solve_sudoku(size, grid):
     """ An efficient Sudoku solver using Algorithm X.
 
@@ -33,7 +34,7 @@ def solve_sudoku(size, grid):
          [("bn", bn) for bn in product(range(N), range(1, N + 1))])
     Y = dict()
     for r, c, n in product(range(N), range(N), range(1, N + 1)):
-        b = (r // R) * R + (c // C) # Box number
+        b = (r // R) * R + (c // C)  # Box number
         Y[(r, c, n)] = [
             ("rc", (r, c)),
             ("rn", (r, n)),
@@ -49,12 +50,14 @@ def solve_sudoku(size, grid):
             grid[r][c] = n
         yield grid
 
+
 def exact_cover(X, Y):
     X = {j: set() for j in X}
     for i, row in Y.items():
         for j in row:
             X[j].add(i)
     return X, Y
+
 
 def solve(X, Y, solution):
     if not X:
@@ -69,6 +72,7 @@ def solve(X, Y, solution):
             deselect(X, Y, r, cols)
             solution.pop()
 
+
 def select(X, Y, r):
     cols = []
     for j in Y[r]:
@@ -79,6 +83,7 @@ def select(X, Y, r):
         cols.append(X.pop(j))
     return cols
 
+
 def deselect(X, Y, r, cols):
     for j in reversed(Y[r]):
         X[j] = cols.pop()
@@ -87,6 +92,8 @@ def deselect(X, Y, r, cols):
                 if k != j:
                     X[k].add(i)
 
+
 if __name__ == "__main__":
     import doctest
+
     doctest.testmod()

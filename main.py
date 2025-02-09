@@ -1,10 +1,10 @@
 import pygame
-from pygame.examples.moveit import WIDTH
 
 from game_screen import Board
 from start_screen import StartScreen
 from BackBtn import BackButton
 from result import Result
+
 window = ["start_screen", "game_screen", "result_screen"]
 window_pos = 0
 
@@ -64,7 +64,6 @@ def main():
                     window_pos = 2
                     score = board.score
                     status = answer_board
-                    print(status, "status")
                     result.set_score(score, status, width, height, start_screen.name)
                 if ans_back_btn:
                     window_pos = 0
@@ -81,7 +80,6 @@ def main():
                             pass
                     else:
                         board.press_cell((-1, -1))
-                    print(position)
 
         if window[window_pos] == "result_screen":
             if ans_back_btn:

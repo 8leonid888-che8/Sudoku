@@ -1,6 +1,7 @@
 import pygame
 from rating_bd import fetch_all_data
 
+
 class StartScreen:
     def __init__(self, width, height):
         self.window = ["menu", "sign in", "choice level", "rating"]
@@ -15,7 +16,6 @@ class StartScreen:
         self.__btn_medium_lvl = None
         self.__btn_easy_lvl = None
         self.__btn_hard_lvl = None
-        # self.__btn_legendary_lvl = None
         self.name = "write your name"
         self.__input_moment = -1
 
@@ -72,7 +72,6 @@ class StartScreen:
     def __render_choice_lvl(self, screen, color):
         step = 4
         words = ["medium", "easy", "hard"]
-        # legendary
         x_pos = length = 0
         y_pos = 0
         font = pygame.font.Font(None, 40)
@@ -101,16 +100,6 @@ class StartScreen:
                 word_rect = [word_rect[0] - step, word_rect[1] - step, word_rect[2] + step * 2, word_rect[3] + step * 2]
                 pygame.draw.rect(screen, pygame.Color(color), word_rect, 1)
                 self.__btn_hard_lvl = pygame.Rect(word_rect)
-        # font = pygame.font.Font(None, 60)
-        # str_render = font.render("legendary", 1, pygame.Color(color))
-        # word_rect = str_render.get_rect()
-        # word_rect = [self.__width // 2 - word_rect[2] // 2, y_pos + 40,
-        #              word_rect[2], word_rect[3]]
-        # screen.blit(str_render, word_rect)
-        # word_rect = [word_rect[0] - step, word_rect[1] - step, word_rect[2] + step * 2, word_rect[3] + step * 2]
-        # pygame.draw.rect(screen, pygame.Color(color), word_rect, 1)
-        # self.__btn_legendary_lvl = pygame.Rect(word_rect)
-
 
     def __render_rating(self, screen, color):
         data = sorted(fetch_all_data(), key=lambda x: x[2], reverse=True)
@@ -119,7 +108,7 @@ class StartScreen:
         step = 10
         for i in range(len(data)):
             font = pygame.font.Font(None, 30)
-            str_render = font.render(f"{i+1}. {data[i][1]} {data[i][2]}", 1, pygame.Color(color))
+            str_render = font.render(f"{i + 1}. {data[i][1]} {data[i][2]}", 1, pygame.Color(color))
             rect = str_render.get_rect()
             rect.x = x - rect.w // 2
             rect.y = top + step
@@ -137,12 +126,9 @@ class StartScreen:
         if self.window[self.window_pos] == "rating":
             self.__render_rating(screen, color)
 
-
-
     def get_name(self, word):
         if self.__input_moment == 1:
             if word == "enter " and self.name != "write your name" and self.name != "":
-                print(self.name, len(self.name), "n")
                 self.__input_moment = False
                 self.window_pos = 2
                 # return 1
@@ -154,7 +140,6 @@ class StartScreen:
                         self.name = word
                     else:
                         self.name += word
-        print(self.name)
 
     def click(self, pos):
         if self.window[self.window_pos] == "menu":
@@ -172,7 +157,6 @@ class StartScreen:
             if self.__button_play and self.__button_play.collidepoint(
                     pos) and self.name != "write your name" and self.name != "":
                 self.window_pos = 2
-                # return 1
 
         if self.window[self.window_pos] == "choice level":
             if self.__btn_easy_lvl and self.__btn_easy_lvl.collidepoint(pos):
@@ -181,13 +165,9 @@ class StartScreen:
                 return 2
             if self.__btn_hard_lvl and self.__btn_hard_lvl.collidepoint(pos):
                 return 3
-            # if self.__btn_legendary_lvl and self.__btn_legendary_lvl.collidepoint(pos):
-            #     return 4
 
     def change_window(self):
         if self.window[self.window_pos] == "sign in" or self.window[self.window_pos] == "rating":
             self.window_pos = 0
         if self.window[self.window_pos] == "choice level":
             self.window_pos = 1
-
-

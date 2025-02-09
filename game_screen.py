@@ -1,26 +1,12 @@
 import pygame
 from pygame import Color
-# from BackBtn import BackButton
 from sudoku_generator import sudoku_generate
-import copy
-
-
-# solution, task, missing_nums, dif = sudoku_generate(1)
-# print("dif", dif)
-# print(missing_nums)
-# print(solution)
-# print(task)
 
 
 class Board:
     def __init__(self, n=3, lvl=1):
         self.n = n  # количество клеток в районе
         self.__solution, self.board, self.missing_nums, diff, self.lvl = sudoku_generate(lvl)
-        # self.board = copy.deepcopy(self.__solution)
-        # self.board[0][0] = 0
-        print(self.__solution)
-        print(self.board)
-        print(diff, self.lvl)
         for y in range(n ** 2):
             for x in range(n ** 2):
                 val = self.board[y][x]
@@ -44,18 +30,14 @@ class Board:
         self.width = None
         self.height = None
         self.last_val = None
-        # self.btn_back = pygame.sprite.Group()
-        # BackButton(self.width, self.top, self.btn_back)
 
     def set_view(self, width, height):
         self.cell_size = round(40 * height / 500)
-        # self.left = round((width // 2 - self.cell_size * 9 // 2) * 0.5)
         self.left = 30
         self.top = 20
         self.k = height / 500
         self.width = width
         self.height = height
-        # print(self.k)
 
     def get_cell(self, x_point, y_point):
         if 0 <= x_point - self.left <= self.width * self.cell_size and 0 <= y_point - self.top <= self.height * self.cell_size:
@@ -78,7 +60,6 @@ class Board:
             self.last_selected_cell = None
             return
 
-
         if pos[2] == "big":
             if not self.board[pos[1]][pos[0]]["num"]:
                 if self.last_selected_cell:
@@ -94,7 +75,8 @@ class Board:
         if pos[2] == "small":
             if self.moment_choice:
                 num = self.keys_missing_nums[pos[0]]
-                if self.last_selected_cell and self.board[self.last_selected_cell[1]][self.last_selected_cell[0]]["num"] == num:
+                if self.last_selected_cell and self.board[self.last_selected_cell[1]][self.last_selected_cell[0]][
+                    "num"] == num:
                     return
                 if self.missing_nums[num] != 0 and self.last_selected_cell:
                     n = self.board[self.last_selected_cell[1]][self.last_selected_cell[0]]["num"]
@@ -108,7 +90,6 @@ class Board:
 
     def press_back(self, pos):
         x, y, _ = pos
-        print(pos)
         if pos[2] == "big":
             if self.board[y][x]["change"] and self.board[y][x]["num"]:
                 num = self.board[y][x]["num"]
@@ -139,7 +120,6 @@ class Board:
                         if self.health != 0:
                             self.health -= 1
             if latter == "del":
-                print("dell")
                 if self.board[y][x]["correct"]:
                     self.board[y][x]["correct"] = None
                     if self.score > 0:
@@ -149,12 +129,6 @@ class Board:
                             self.score -= 45 * self.lvl
                         if self.lvl == 3:
                             self.score -= 63 * self.lvl
-
-            print(pos, "pos", self.board[y][x])
-            print(self.score)
-
-    # def press_back_btn(self, arg):
-    #     answer  = self.btn_back.update(*arg)
 
     def render(self, screen):
         x, y = self.left, self.top
@@ -182,7 +156,6 @@ class Board:
                     else:
                         text = font.render(str(self.board[h][w]["num"]), True, (100, 255, 100))
                     text_rect = text.get_rect()
-                    # text_rect = [x + round(text_rect[2] / 1.7), y + round(text_rect[3] / 1.8), text_rect[2], text_rect[3]]
                     screen.blit(text, (round(x + 13 * self.k), round(y + 10 * self.k)))
                     pygame.draw.rect(screen, pygame.Color("white"), (x, y, self.cell_size, self.cell_size), 1)
                 x += self.cell_size
@@ -195,12 +168,10 @@ class Board:
             font = pygame.font.Font(None, round(35 * self.k))
             for w in range(self.n ** 2):
                 if h == 0:
-                    # font = pygame.font.Font(None, round(35 * self.k))
                     text = font.render(str(self.keys_missing_nums[w]), True, Color("blue"))
                     screen.blit(text, (round(x + 13 * self.k), round(y + 10 * self.k)))
                     pygame.draw.rect(screen, pygame.Color("white"), (x, y, self.cell_size, self.cell_size), 1)
                 else:
-                    # font = pygame.font.Font(None, round(35 * self.k))
                     text = font.render(str(self.missing_nums[self.keys_missing_nums[w]]), True, Color("blue"))
                     screen.blit(text, (round(x + 13 * self.k), round(y + 10 * self.k)))
                     pygame.draw.rect(screen, pygame.Color("white"), (x, y, self.cell_size, self.cell_size), 1)
@@ -216,7 +187,6 @@ class Board:
         x = round((self.width - self.left - self.cell_size * 9) / 2 - text_rect[2] / 2) + self.left + self.cell_size * 9
         text_rect = [x, y, text_rect[2], text_rect[3]]
         screen.blit(text, text_rect)
-        # self.btn_back.draw(screen)
 
     def check_points_health(self):
         f = []
@@ -225,7 +195,6 @@ class Board:
                 if x["change"]:
                     f.append(x["num"] != 0 and x["correct"])
         if self.health == 0:
-            print(self.health, f)
             self.health = 3
             return "Game over"
         if all(f):

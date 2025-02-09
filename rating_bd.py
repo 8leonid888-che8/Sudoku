@@ -26,5 +26,3 @@ def fetch_all_data():
 
     rows = cur.fetchall()
     return rows
-
-print(fetch_all_data())

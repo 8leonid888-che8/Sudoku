@@ -16,3 +16,15 @@ def save_result(name, score):
         cur.execute("""INSERT INTO rating (name, score) VALUES (?, ?)""", (name, score))
     con.commit()
     con.close()
+
+
+def fetch_all_data():
+    con = sqlite3.connect("rating_bd")
+    cur = con.cursor()
+
+    cur.execute("SELECT * FROM rating")
+
+    rows = cur.fetchall()
+    return rows
+
+print(fetch_all_data())

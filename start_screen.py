@@ -81,14 +81,14 @@ class StartScreen:
             word_rect = str_render.get_rect()
             word_rect = [self.__width // 2 - word_rect[2] // 2, (self.__height // 2 - word_rect[3] // 2 - 100),
                          word_rect[2], word_rect[3]]
-            if word == "middle":
+            if word == "medium":
                 x = word_rect[0]
                 y_pos = word_rect[1] + word_rect[3]
                 length = word_rect[2]
                 screen.blit(str_render, word_rect)
                 word_rect = [word_rect[0] - step, word_rect[1] - step, word_rect[2] + step * 2, word_rect[3] + step * 2]
                 pygame.draw.rect(screen, pygame.Color(color), word_rect, 1)
-                self.__btn_middle_lvl = pygame.Rect(word_rect)
+                self.__btn_medium_lvl = pygame.Rect(word_rect)
             if word == "easy":
                 word_rect[0] = word_rect[0] - 20 - length
                 screen.blit(str_render, word_rect)
@@ -157,7 +157,7 @@ class StartScreen:
         if self.window[self.window_pos] == "choice level":
             if self.__btn_easy_lvl and self.__btn_easy_lvl.collidepoint(pos):
                 return 1
-            if self.__btn_middle_lvl and self.__btn_middle_lvl.collidepoint(pos):
+            if self.__btn_medium_lvl and self.__btn_medium_lvl.collidepoint(pos):
                 return 2
             if self.__btn_hard_lvl and self.__btn_hard_lvl.collidepoint(pos):
                 return 3

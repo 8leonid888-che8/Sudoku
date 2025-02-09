@@ -6,7 +6,7 @@ from start_screen import StartScreen
 from BackBtn import BackButton
 from result import Result
 window = ["start_screen", "game_screen", "result_screen"]
-window_pos = 2
+window_pos = 0
 
 
 def main():

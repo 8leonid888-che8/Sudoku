@@ -186,7 +186,13 @@ class Board:
         text_rect = text.get_rect()
         x = round((self.width - self.left - self.cell_size * 9) / 2 - text_rect[2] / 2) + self.left + self.cell_size * 9
         text_rect = [x, y, text_rect[2], text_rect[3]]
+        y += text_rect[1]
         screen.blit(text, text_rect)
+        text = font.render(f"health: {self.health}", True, self.color)
+        text_rect = text.get_rect()
+        text_rect = [x, y, text_rect[2], text_rect[3]]
+        screen.blit(text, text_rect)
+
 
     def check_points_health(self):
         f = []
